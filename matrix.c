@@ -101,21 +101,39 @@ int main()
 /* create a 2d array whose size is row x col using malloc() */
 int** create_matrix(int row, int col)
 {
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return NULL;
+	}
+
     int **array = (int**)malloc(sizeof(int *)*row);
     for (int i=0; i < row; i++)
         array[i] = (int*)malloc(sizeof(int)*col);
+
+    if (array==NULL) {
+        printf("Memory Allocation Failed\n");
+        return NULL;}
+
     return array;
 }
 
 /* print matrix whose size is row x col */
 void print_matrix(int** matrix, int row, int col)
 {
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return;
+	}
     for (int i=0;i<row;i++){
         for (int z=0;z<col;z++)
             printf("%5d",matrix[i][z]);
     printf("\n");}
     
     printf("\n");
+
+    if (matrix == NULL) {
+		printf("Memory Allocation Failed.\n");
+		return;}
 }
 
 
@@ -123,9 +141,16 @@ void print_matrix(int** matrix, int row, int col)
 /* free memory allocated by create_matrix() */
 int free_matrix(int** matrix, int row, int col)
 {
-    for(int i=0;i<row;i++)
-        for (int z=0;z<col;z++)
-            free((int**)matrix[i][z]);
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return -1;
+	}
+
+    for(int i=0;i<row;i++){
+        free(matrix[i]);}
+
+    free(matrix);
+    return 1;
 
 }
 
@@ -133,75 +158,104 @@ int free_matrix(int** matrix, int row, int col)
 /* assign random values to the given matrix */
 int fill_data(int** matrix, int row, int col)
 {
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return -1;}
+
     matrix[row][col];
     for (int i=0;i<row;i++) {
         for (int z=0;z<col;z++)
             matrix[i][z]=(rand()%19)+1; }
 
-    if(matrix==NULL){
-        printf("matrix assign error");
-        return 0;}
+     if (matrix == NULL) {
+		printf("Memory Allocation Failed.\n");
+		return -1;}
+
+    return 1;
             
 }
 
 /* matrix_sum = matrix_a + matrix_b */
 int addition_matrix(int** matrix_a, int** matrix_b, int row, int col)
 {
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return -1;}
+
     int **matrix_sum=create_matrix(row,col);
     for(int i=0;i<row;i++)
         for (int z=0;z<col;z++)
             matrix_sum[i][z]=matrix_a[i][z]+matrix_b[i][z];
     
-    if(matrix_sum==NULL){
-        printf("matrix assign error");
-        return 0;}
+     if (matrix_a == NULL||matrix_b=NULL||matrix_sum==NULL) {
+		printf("Memory Allocation Failed.\n");
+		return -1; }
 
     printf("matrix_sum\n");
     print_matrix (matrix_sum,row,col);
+    free(matrix_sum,row,col);
+    return 1;
 }
 
 /* matrix_sub = matrix_a - matrix_b */
 int subtraction_matrix(int** matrix_a, int** matrix_b, int row, int col)
 {
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return -1;}
+
     int **matrix_sub=create_matrix(row,col);
         for(int i=0;i<row;i++)
             for (int z=0;z<col;z++)
                 matrix_sub[i][z]=matrix_a[i][z]-matrix_b[i][z];
 
-    if(matrix_sub==NULL){
-        printf("matrix assign error");
-        return 0;}
+     if (matrix_a == NULL||matrix_b=NULL||matrix_sub==NULL) {
+		printf("Memory Allocation Failed.\n");
+		return -1;}
 
     printf("matrix_sub\n");
     print_matrix(matrix_sub,row,col);
+    free(matrix_sub,row,col);
+    return 1;
 }
 
 /* transpose the matrix to matrix_t */
 int transpose_matrix(int** matrix, int** matrix_t, int row, int col)
 {
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return -1;}
+
     for (int i=0;i<row;i++)
         for(int z=0;z<col;z++)
             matrix_t[z][i]=matrix[i][z];
 
-    if(matrix_t==NULL){
-        printf("matrix assign error");
-        return 0;}
+     if (matrix == NULL||matrix_t=NULL) {
+		printf("Memory Allocation Failed.\n");
+		return -1; }
     
-
+    return 1;
 }
 
 /* matrix_axt - matrix_a x matrix_t */
 int multiply_matrix(int** matrix_a, int** matrix_t, int row, int col)
 {
+    if (row <= 0 || col <= 0) {
+		printf("Check the size of row and col!\n");
+		return -1;}
+
     int **matrix_axt=create_matrix(row,col);
     for(int i=0;i<row;i++)
         for (int z=0;z<col;z++)
            matrix_axt[i][z]=(matrix_a[i][z])*(matrix_t[i][z]);
 
-    if(matrix_axt==NULL){
-        printf("matrix assign error");
-        return 0;}
+    if (matrix == NULL||matrix_axt=NULL) {
+		printf("Memory Allocation Failed.\n");
+		return -1; }
     
     printf("matrix_axt\n");
     print_matrix(matrix_axt,row,col);
+    free(matrix_axt);
+
+    return 1;
 }
